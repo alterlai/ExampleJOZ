@@ -17,14 +17,19 @@ public class App(IIotEdgeService<ModuleTwin> edgeService, ILogger<App> _logger)
 
 		while (true)
 		{
-			// Simulate some work
-			x_pos += new Random().Next(-1, 2); // Randomly adjust x position
-			y_pos += new Random().Next(-1, 2); // Randomly adjust y position
+			if(Settings.IsTurnedOn)
+			{
+				// Simulate some work
+				x_pos += new Random().Next(-1, 2); // Randomly adjust x position
+				y_pos += new Random().Next(-1, 2); // Randomly adjust y position
 
-			_logger.LogInformation($"Current position: X:{x_pos}, Y:{y_pos}. Operating mode: {ModuleTwin.OperatingMode}");
-
-			await Task.Delay(1000);
-			//_logger.LogInformation($"{DateTime.UtcNow}: Running...");
+				_logger.LogInformation($"Current position: X:{x_pos}, Y:{y_pos}. Operating mode: {ModuleTwin.OperatingMode}");
+			}
+			else
+			{
+				_logger.LogInformation("Module is turned off. No operations will be performed.");
+			}
+				await Task.Delay(1000);
 		}
 	}
 

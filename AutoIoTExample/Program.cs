@@ -1,5 +1,6 @@
 ﻿using AutoIoTEdge.Services;
 using AutoIoTExample.Models;
+using AutoIoTExample.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -24,6 +25,7 @@ public class Program
 			builder.Services.AddSingleton<IIotEdgeService<ModuleTwin>, IotEdgeService<ModuleTwin>>();
 		}
 
+		builder.Services.AddSingleton<SetupService>();
 		builder.Services.AddSingleton<App>();
 
 		using var host = builder.Build();
