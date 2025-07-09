@@ -25,12 +25,15 @@ public class Program
 			builder.Services.AddSingleton<IIotEdgeService<ModuleTwin>, IotEdgeService<ModuleTwin>>();
 		}
 
-		builder.Services.AddSingleton<SetupService>();
+		builder.Services.AddHostedService<SetupService>();
 		builder.Services.AddSingleton<App>();
 
 		using var host = builder.Build();
+
+		await host.StartAsync();
 		var app = host.Services.GetRequiredService<App>();
 		await app.RunAsync();
+		await host.WaitForShutdownAsync();
 	}
 }
 
