@@ -1,5 +1,6 @@
 ﻿using AutoIoTEdge.Services;
 using AutoIoTExample.Models;
+using AutoIoTExample.Service;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -25,9 +26,11 @@ public class Program
 		}
 
 		// Services
+		builder.Services.AddHostedService<SetupService>();
 		builder.Services.AddSingleton<App>();
 
 		using var host = builder.Build();
+		await host.StartAsync();
 		var app = host.Services.GetRequiredService<App>();
 		await app.RunAsync();
 	}
