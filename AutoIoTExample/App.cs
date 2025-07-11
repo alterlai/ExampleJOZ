@@ -1,8 +1,9 @@
-﻿using AutoIoTExample.Models;
+﻿using AutoIoTEdge.Services;
+using AutoIoTExample.Models;
 using Microsoft.Extensions.Logging;
 
 namespace AutoIoTExample;
-public class App(ILogger<App> _logger)
+public class App(ILogger<App> _logger, IIotEdgeService<ModuleTwin> iotEdgeService)
 {
 	public async Task RunAsync()
 	{
