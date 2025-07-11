@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using AutoIoTEdge.Services;
+using AutoIoTExample.Models;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 
@@ -10,13 +12,24 @@ public class Program
 	{
 		var builder = Host.CreateApplicationBuilder();
 
+		var isDevelopment = builder.Environment.IsDevelopment();
+
+		if (isDevelopment)
+		{
+			builder.Services.Configure<ModuleTwin>(builder.Configuration.GetSection("ModuleTwin"));
+			builder.Services.AddSingleton<IIotEdgeService<ModuleTwin>, DummyIotService<ModuleTwin>>();
+		}
+		else
+		{
+			builder.Services.AddSingleton<IIotEdgeService<ModuleTwin>, IotEdgeService<ModuleTwin>>();
+		}
+
 		// Services
 		builder.Services.AddSingleton<App>();
 
 		using var host = builder.Build();
 		var app = host.Services.GetRequiredService<App>();
 		await app.RunAsync();
-		await host.WaitForShutdownAsync();
 	}
 }
 
